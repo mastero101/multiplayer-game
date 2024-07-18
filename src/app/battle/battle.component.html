@@ -1,0 +1,13 @@
+<div class="battle-container" *ngIf="player1 && player2">
+  <h2 class="battle-header">Battle!</h2>
+  <div class="battle-players">
+    <app-player-stats [player]="player1"></app-player-stats>
+    <span class="vs-label">VS</span>
+    <app-player-stats [player]="player2"></app-player-stats>
+  </div>
+  <div class="battle-actions">
+    <button mat-raised-button color="primary" (click)="startBattle()">Start Battle</button>
+    <button mat-raised-button color="warn" (click)="restartBattle()">Restart Battle</button>
+  </div>
+  <div *ngIf="result" class="battle-result" [innerHTML]="result"></div>
+</div>

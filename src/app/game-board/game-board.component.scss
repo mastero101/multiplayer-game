@@ -1,0 +1,27 @@
+
+.game-board {
+    max-width: 800px; /* Ajusta el ancho máximo según tus preferencias */
+    margin: auto; /* Centra el tablero horizontalmente */
+    padding: 20px;
+  }
+  
+  .game-actions {
+    text-align: center; /* Centra los botones */
+    margin-bottom: 20px; /* Espacio inferior entre los botones y los jugadores */
+  }
+  
+  .game-actions button {
+    margin: 0 10px; /* Espacio entre los botones */
+  }
+  
+  .game-players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra los jugadores horizontalmente */
+  }
+  
+  .player-card {
+    width: 200px; /* Ancho de las tarjetas de jugador */
+    margin: 10px; /* Espacio entre las tarjetas de jugador */
+  }
+  

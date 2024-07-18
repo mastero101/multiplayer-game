@@ -1,0 +1,13 @@
+<div class="game-board">
+  <div class="game-actions">
+    <button mat-raised-button (click)="addRandomPlayer()">Add Random Player</button>
+    <button mat-raised-button color="primary" (click)="startBattle()">Start Battle</button>
+  </div>
+  <div class="game-players">
+    <div *ngFor="let player of players" class="player-card">
+      <app-player-stats [player]="player"></app-player-stats>
+    </div>
+  </div>
+  <app-battle *ngIf="battleStarted" [player1]="player1" [player2]="player2"></app-battle>
+</div>
+

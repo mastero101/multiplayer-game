@@ -1,0 +1,48 @@
+.battle-container {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.battle-header {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.battle-players {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.vs-label {
+  font-size: 20px;
+  margin: 0 15px;
+}
+
+.battle-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.battle-actions button {
+  margin: 0 10px; /* Espacio entre los botones */
+}
+
+.battle-result {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #ff5722;
+}
+
+.battle-step {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.battle-step-show {
+  opacity: 1;
+}
