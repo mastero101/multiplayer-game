@@ -72,11 +72,11 @@ export class GameService {
     const newPlayer: Player = {
       name: `Player${existingPlayersCount + 1}`,
       class: randomClass,
-      STR: Math.max(Math.floor(Math.random() * 100), 0),
-      DEX: Math.max(Math.floor(Math.random() * 100), 0),
-      VIT: Math.max(Math.floor(Math.random() * 100), 0),
-      INT: Math.max(Math.floor(Math.random() * 100), 0),
-      LUK: Math.max(Math.floor(Math.random() * 100), 0),
+      STR: Math.max(Math.floor(Math.random() * 100) + 1, 1),
+      DEX: Math.max(Math.floor(Math.random() * 100) + 1, 1),
+      VIT: Math.max(Math.floor(Math.random() * 100) + 1, 1),
+      INT: Math.max(Math.floor(Math.random() * 100) + 1, 1),
+      LUK: Math.max(Math.floor(Math.random() * 100) + 1, 1),
       specialAbility: randomAbility
     };
 
