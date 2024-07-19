@@ -9,7 +9,12 @@
     <button mat-raised-button color="primary" (click)="startBattle()">Start Battle</button>
     <button mat-raised-button color="warn" (click)="restartBattle()">Restart Battle</button>
   </div>
-  <div *ngIf="result" class="battle-result" [innerHTML]="result"></div>
+  <div class="battle-log">
+    <h2>Battle Log</h2>
+    <div *ngFor="let step of battleLog">
+      <p [innerHTML]="step"></p>
+    </div>
+  </div>
 </div>
 
 

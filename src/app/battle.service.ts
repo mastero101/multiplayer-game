@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-
+import { Observable, of, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { Player } from './game.service';
 
 @Injectable({
@@ -9,28 +10,48 @@ export class BattleService {
 
   constructor() {}
 
-  battle(player1: Player, player2: Player): string {
-    let result: string = '';
+  battle(player1: Player, player2: Player): Observable<string[]> {
+    const steps: string[] = [];
     let round = 1;
 
     while (player1.VIT > 0 && player2.VIT > 0) {
-      result += `Round ${round}:<br>`;
-      result += this.takeTurn(player1, player2);
+      steps.push(`Round ${round}:`);
+      steps.push(this.takeTurn(player1, player2));
       if (player2.VIT > 0) {
-        result += this.takeTurn(player2, player1);
+        steps.push(this.takeTurn(player2, player1));
       }
       round++;
     }
 
     if (player1.VIT > 0) {
-      result += `${player1.name} wins!`;
+      steps.push(`${player1.name} Wins!`);
     } else if (player2.VIT > 0) {
-      result += `${player2.name} wins!`;
+      steps.push(`${player2.name} Wins!`);
     } else {
-      result += `It's a tie!`;
+      steps.push(`It's a Tie!`);
     }
 
-    return result;
+    // Usar un Observable para emitir los pasos con retraso
+    return new Observable<string[]>(observer => {
+      let index = 0;
+      const delayBetweenSteps = 1800; // 2.5 segundo de delay entre pasos
+
+      // Emitir el primer paso sin retraso
+      if (steps.length > 0) {
+        observer.next([steps[index]]);
+        index++;
+      }
+
+      const intervalId = setInterval(() => {
+        if (index < steps.length) {
+          observer.next([steps[index]]);
+          index++;
+        } else {
+          clearInterval(intervalId);
+          observer.complete();
+        }
+      }, delayBetweenSteps);
+    });
   }
 
   private takeTurn(attacker: Player, defender: Player): string {
@@ -75,7 +96,6 @@ export class BattleService {
     }
   }
 
-
   private magicAttack(attacker: Player, defender: Player): string {
     const hitChance = Math.random() * 100;
     const hitThreshold = 50 + attacker.INT - defender.INT;
@@ -99,5 +119,4 @@ export class BattleService {
       return `${attacker.name}'s spell misses ${defender.name}.<br>`;
     }
   }
-
 }

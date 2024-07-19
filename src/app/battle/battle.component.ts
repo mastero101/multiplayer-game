@@ -23,6 +23,7 @@ export class BattleComponent implements AfterViewInit {
   @Input() player1!: Player;
   @Input() player2!: Player;
   @ViewChild('battleContainer') battleContainer!: ElementRef;
+  battleLog: string[] = [];
   result: string | null = null;
 
   constructor(private battleService: BattleService) {}
@@ -32,9 +33,34 @@ export class BattleComponent implements AfterViewInit {
   }
 
   startBattle() {
-    this.result = this.battleService.battle(this.player1, this.player2);
-    setTimeout(() => this.scrollToBottom(), 0);
+    this.battleService.battle(this.player1, this.player2).subscribe(
+      steps => {
+        this.processSteps(steps);
+      },
+      error => {
+        console.error('Error during battle:', error);
+      }
+    );
   }
+
+  private processSteps(steps: string[]) {
+    if (steps.length === 0) return;
+
+    this.battleLog.push(steps[0]);
+    this.scrollToBottom();
+
+    let index = 1;
+    const interval = setInterval(() => {
+      if (index < steps.length) {
+        this.battleLog.push(steps[index]);
+        index++;
+        this.scrollToBottom();
+      } else {
+        clearInterval(interval);
+      }
+    }, 2000); 
+  }
+
 
   restartBattle() {
     window.location.reload(); // Reset the result
