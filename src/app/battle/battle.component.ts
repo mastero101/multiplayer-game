@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Player } from '../game.service';
@@ -19,18 +19,30 @@ import { BattleService } from '../battle.service';
   templateUrl: './battle.component.html',
   styleUrl: './battle.component.scss'
 })
-export class BattleComponent {
+export class BattleComponent implements AfterViewInit {
   @Input() player1!: Player;
   @Input() player2!: Player;
+  @ViewChild('battleContainer') battleContainer!: ElementRef;
   result: string | null = null;
 
   constructor(private battleService: BattleService) {}
 
+  ngAfterViewInit() {
+    this.scrollToBottom();
+  }
+
   startBattle() {
     this.result = this.battleService.battle(this.player1, this.player2);
+    setTimeout(() => this.scrollToBottom(), 0);
   }
 
   restartBattle() {
     window.location.reload(); // Reset the result
+  }
+
+  private scrollToBottom() {
+    if (this.battleContainer) {
+      this.battleContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
   }
 }

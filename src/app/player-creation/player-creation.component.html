@@ -1,0 +1,64 @@
+<div *ngIf="newPlayer">
+    <h2>Create New Player - {{ newPlayer.class }}</h2>
+    <p>Name: {{ newPlayer.name }}</p>
+    <div class="attributes-grid">
+      <div class="attribute">
+        <p>STR: {{ newPlayer.STR }}</p>
+        <div class="button-group">
+          <button mat-icon-button color="primary" (click)="addPoint('STR')">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="subtractPoint('STR')">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="attribute">
+        <p>DEX: {{ newPlayer.DEX }}</p>
+        <div class="button-group">
+          <button mat-icon-button color="primary" (click)="addPoint('DEX')">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="subtractPoint('DEX')">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="attribute">
+        <p>VIT: {{ newPlayer.VIT }}</p>
+        <div class="button-group">
+          <button mat-icon-button color="primary" (click)="addPoint('VIT')">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="subtractPoint('VIT')">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="attribute">
+        <p>INT: {{ newPlayer.INT }}</p>
+        <div class="button-group">
+          <button mat-icon-button color="primary" (click)="addPoint('INT')">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="subtractPoint('INT')">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="attribute">
+        <p>LUK: {{ newPlayer.LUK }}</p>
+        <div class="button-group">
+          <button mat-icon-button color="primary" (click)="addPoint('LUK')">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="subtractPoint('LUK')">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <p>Free Points: {{ newPlayer.freePoints }}</p>
+    <button mat-raised-button color="primary" (click)="savePlayer()">Save Player</button>
+  </div>
+    

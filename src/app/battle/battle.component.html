@@ -1,4 +1,4 @@
-<div class="battle-container" *ngIf="player1 && player2">
+<div class="battle-container" *ngIf="player1 && player2" #battleContainer>
   <h2 class="battle-header">Battle!</h2>
   <div class="battle-players">
     <app-player-stats [player]="player1"></app-player-stats>
@@ -11,3 +11,5 @@
   </div>
   <div *ngIf="result" class="battle-result" [innerHTML]="result"></div>
 </div>
+
+
