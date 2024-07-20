@@ -15,9 +15,11 @@ export class PlayerStatsComponent implements OnInit, OnChanges {
   @Input() player!: Player;
   vitPercentage: number = 100;
   vitBarClass: string = 'green';
+  animationUrl: string = '';
 
   ngOnInit(): void {
     this.updateVitPercentage();
+    this.setAnimationUrl();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -37,6 +39,26 @@ export class PlayerStatsComponent implements OnInit, OnChanges {
       this.vitBarClass = 'yellow';
     } else {
       this.vitBarClass = 'red';
+    }
+  }
+
+  setAnimationUrl() {
+    switch (this.player.class) {
+      case 'Paladin':
+        this.animationUrl = '../../assets/chars/Outfit_Armoured_Archer_Male_Addon_3.gif';
+        break;
+      case 'Sorcerer':
+        this.animationUrl = '../../assets/chars/Outfit_Summoner_Male_Addon_3.gif';
+        break;
+      case 'Druid':
+        this.animationUrl = '../../assets/chars/Outfit_Herbalist_Male_Addon_3.gif';
+        break;
+      case 'Knight':
+        this.animationUrl = '../../assets/chars/Outfit_Warrior_Male_Addon_3.gif';
+        break;
+      default:
+        this.animationUrl = '../../assets/chars/Outfit_Warrior_Male_Addon_3.gif';
+        break;
     }
   }
 }

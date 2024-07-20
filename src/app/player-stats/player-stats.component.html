@@ -1,5 +1,7 @@
 <div class="player-stats">
-  <h2>{{ player.name }} - {{ player.class }}</h2>
+  <img [src]="animationUrl" alt="{{ player.class }} animation">
+  <h2>{{ player.name }} - 
+      {{ player.class }}</h2>
   <div class="stats">
     <p><span>STR:</span> {{ player.STR }}</p>
     <p><span>DEX:</span> {{ player.DEX }}</p>

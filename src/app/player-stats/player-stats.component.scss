@@ -1,10 +1,23 @@
 .player-stats {
+  display: flex;
+  flex-direction: column;
   padding: 15px;
   border: 2px solid #ddd;
   border-radius: 10px;
   background-color: #fff;
   margin: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin: 0;
+  }
+
+  img {
+    margin: 0 auto;
+    width: 64px;
+    height: 64px; 
+    margin-bottom: 10px;
+  }
 }
 
 .player-stats h2 {
