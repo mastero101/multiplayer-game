@@ -48,9 +48,9 @@ export const specialAbilities: SpecialAbility[] = [
   },
   {
     name: 'Fireball',
-    description: 'Deals INT*2 damage to the defender',
+    description: 'Deals INT*1.5 damage to the defender',
     execute: (attacker: Player, defender: Player) => {
-      const damage = attacker.INT * 2 - defender.INT / 2;
+      const damage = attacker.INT * 1.5- defender.INT / 2;
       defender.VIT -= damage;
       return `${attacker.name} casts Fireball on ${defender.name} for ${damage} magic damage.<br>`;
     },
