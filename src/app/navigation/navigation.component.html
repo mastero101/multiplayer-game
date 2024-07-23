@@ -1,7 +1,32 @@
-<nav>
-    <ul>
-      <li><a routerLink="/game-board">Game Board</a></li>
-      <li><a routerLink="/battle">Battle</a></li>
-    </ul>
+<nav class="navbar">
+  <ul class="navbar-menu">
+    <li class="navbar-item">
+      <button 
+        (click)="navigateTo('/game-board')"
+        [class.active]="isActive('/game-board')"
+        class="navbar-button"
+      >
+        Game Board
+      </button>
+    </li>
+    <li class="navbar-item">
+      <button 
+        (click)="navigateTo('/battle')"
+        [class.active]="isActive('/battle')"
+        class="navbar-button"
+      >
+        Battle
+      </button>
+    </li>
+    <li class="navbar-item">
+      <button 
+        (click)="navigateTo('/register')"
+        [class.active]="isActive('/register')"
+        class="navbar-button"
+      >
+        Register
+      </button>
+    </li>
+  </ul>
 </nav>
-  <router-outlet></router-outlet>
+<router-outlet></router-outlet>
