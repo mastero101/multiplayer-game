@@ -77,7 +77,7 @@ export class BattleService {
     const hitThreshold = 50 + attacker.DEX - defender.DEX;
 
     if (hitChance <= hitThreshold) {
-      let damage = attacker.STR - defender.VIT / 2;
+      let damage = attacker.STR * 1.2 - defender.VIT / 2;
       if (damage < 0) {
         damage = 0;
       }
@@ -101,7 +101,7 @@ export class BattleService {
     const hitThreshold = 50 + attacker.INT - defender.INT;
 
     if (hitChance <= hitThreshold) {
-      let damage = attacker.INT * 1.5 - defender.INT / 2;
+      let damage = attacker.INT * 1.1 - defender.INT / 2;
       if (damage < 0) {
         damage = 0;
       }
