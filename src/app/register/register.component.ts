@@ -5,12 +5,15 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule, 
+    MatSnackBarModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -23,7 +26,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private accountService: AccountService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -71,16 +75,22 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    // Call the Axios service to register the account
-    const accountData: AccountData = this.registerForm.value;
-    this.accountService.register(accountData).subscribe({
-      next: (response) => {
-        console.log('Account created successfully:', response.data);
-        this.router.navigate(['/']); // Redirect to the home page
+    this.accountService.register(this.registerForm.value).subscribe({
+      next: (data) => {
+        console.log('Account created successfully:', data);
+        this.snackBar.open('Account created successfully!', 'Close', {
+          duration: 3000, // Duración en milisegundos
+          panelClass: ['snackbar-success'] // Clase CSS opcional
+        });
+        this.router.navigate(['/']);
       },
       error: (error) => {
         console.error('Error creating account:', error);
-      },
+        this.snackBar.open('Error creating account. Please try again.', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error'] // Clase CSS opcional
+        });
+      }
     });
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 export interface AccountData {
   username: string;
@@ -40,5 +41,29 @@ export class AccountService {
           observer.error(error);
         });
     });
+  }
+
+  // Method to login to an account
+  login(credentials: { username: string, password: string }): Observable<AxiosResponse<any>> {
+    return new Observable((observer) => {
+      this.axiosInstance
+        .post('/login', credentials)
+        .then((response) => {
+          // Store the token in localStorage
+          if (response.data.token) {
+            sessionStorage.setItem('authToken', response.data.token);
+          }
+          observer.next(response);
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+
+  // Method to logout from an account
+  logout(): void {
+    sessionStorage.removeItem('authToken');
   }
 }

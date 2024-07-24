@@ -18,13 +18,30 @@
         Battle
       </button>
     </li>
-    <li class="navbar-item">
+    <li class="navbar-item" *ngIf="!isLoggedIn">
       <button 
         (click)="navigateTo('/register')"
         [class.active]="isActive('/register')"
         class="navbar-button"
       >
         Register
+      </button>
+    </li>
+    <li class="navbar-item" *ngIf="!isLoggedIn">
+      <button 
+        (click)="navigateTo('/login')"
+        [class.active]="isActive('/login')"
+        class="navbar-button"
+      >
+        Login
+      </button>
+    </li>
+    <li class="navbar-item" *ngIf="isLoggedIn">
+      <button 
+        (click)="logout()"
+        class="navbar-button"
+      >
+        Logout
       </button>
     </li>
   </ul>
