@@ -15,7 +15,8 @@ export interface AccountData {
 })
 export class AccountService {
   private axiosInstance: AxiosInstance;
-  private apiUrl = 'http://localhost:5000/account';
+  private apiUrl2 = 'http://localhost:5000/account';
+  private apiUrl = 'https://rpg21-game-backend.vercel.app/account';
 
   constructor() {
     // Create a new Axios instance
