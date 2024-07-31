@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BattleService } from './battle.service';
 
+import axios from 'axios';
+
 export interface Player {
   name: string;
   class: string;
@@ -110,6 +112,9 @@ export class GameService {
   private playersSubject = new BehaviorSubject<Player[]>([]);
   players$ = this.playersSubject.asObservable();
 
+  private apiUrl2 = 'http://localhost:5000/player';
+  private apiUrl = 'https://rpg21-game-backend.vercel.app/player';
+
   constructor() {}
 
   generateRandomAttributes(existingPlayersCount: number): Player {
@@ -192,13 +197,50 @@ export class GameService {
     return newPlayer;
   }
 
-  addPlayer(player: Player) {
-    if (this.players.length < 2) {
-      this.players.push(player);
-      this.playersSubject.next(this.players);
-    } else {
-      console.error('Ya hay dos jugadores en el juego.');
+  async fetchPlayerByAccountId(accountId: string): Promise<Player | null> {
+    try {
+      const authToken = sessionStorage.getItem('authToken');
+      const response = await axios.get<Player>(
+        `${this.apiUrl}`+`/byaccount/${accountId}`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+
+      console.log(response.data);
+      return this.transformPlayerData(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error fetching player:', error.response?.data || error.message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+      return null;
     }
+  }
+
+  private transformPlayerData(data: any): Player {
+    const specialAbility = specialAbilities.find(ability => ability.name === data.specialAbility) || specialAbilities[0];
+    
+    return {
+      name: data.name,
+      class: data.class,
+      STR: data.STR || data.str || 0,
+      DEX: data.DEX || data.dex || 0,
+      VIT: data.VIT || data.vit || 0,
+      INT: data.INT || data.int || 0,
+      LUK: data.LUK || data.luk || 0,
+      specialAbility: specialAbility,
+      freePoints: data.freePoints || 0,
+      _id: data._id,
+      experience: data.experience || 0,
+      accountId: data.accountId
+    };
+  }
+
+  addPlayer(player: Player) {
+    const currentPlayers = this.playersSubject.getValue();
+    this.playersSubject.next([...currentPlayers, player]);
   }
 
   resetPlayers() {

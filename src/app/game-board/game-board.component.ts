@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, AfterViewChecked, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { GameService, Player } from '../game.service';
@@ -31,16 +32,35 @@ export class GameBoardComponent implements OnInit, AfterViewChecked {
 
   private shouldScroll = false;
 
-  constructor(private gameService: GameService) {}
+  constructor(private gameService: GameService, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit(): void {
     this.gameService.players$.subscribe(players => this.players = players);
+
+    // Check if running in the browser
+    if (isPlatformBrowser(this.platformId)) {
+      // Fetch the player's character based on the accountId
+      const accountId = sessionStorage.getItem('accountId');
+      if (accountId) {
+        this.fetchAndDisplayPlayer(accountId);
+      }
+    }
   }
 
   ngAfterViewChecked(): void {
     if (this.shouldScroll) {
       this.scrollToSection();
       this.shouldScroll = false;
+    }
+  }
+
+  async fetchAndDisplayPlayer(accountId: string) {
+    const player = await this.gameService.fetchPlayerByAccountId(accountId);
+    if (player) {
+      this.gameService.addPlayer(player);
+      console.log('Player added to the game board:', player);
+    } else {
+      console.log('No player found for this accountId.');
     }
   }
 
