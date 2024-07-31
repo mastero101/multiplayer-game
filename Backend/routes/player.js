@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Player = require('../models/Player');
-const Account = require('../models/Account');
 
 /**
  * @swagger
@@ -70,25 +70,79 @@ router.get('/:id', async (req, res) => {
  *         description: Some server error
  */
 
-router.post('/player', async (req, res) => {
-  const { name, class: playerClass, accountId } = req.body;
-
+// Endpoint para crear un nuevo jugador
+router.post('/', async (req, res) => {
   try {
-    const account = await Account.findById(accountId);
-    if (!account) {
-      return res.status(404).json({ error: 'Account not found' });
+    const { name, class: playerClass, accountId } = req.body;
+
+    // Verificar campos necesarios
+    if (!name || !playerClass || !accountId) {
+      return res.status(400).json({ message: 'Faltan campos necesarios' });
     }
 
     const newPlayer = new Player({
       name,
       class: playerClass,
-      accountId
+      accountId,
+      str: 10,  // Valores base para las estadísticas
+      dex: 10,
+      vit: 10,
+      int: 10,
+      luk: 10,
+      experience: 0,
+      abilities: []
     });
+
     await newPlayer.save();
 
     res.status(201).json(newPlayer);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al crear el jugador:', error);
+    res.status(500).json({ message: 'Error al crear el jugador' });
+  }
+});
+
+/**
+ * @swagger
+ * /players/byaccount/{accountId}:
+ *   get:
+ *     summary: Get a player by accountId
+ *     tags: [Player]
+ *     parameters:
+ *       - in: path
+ *         name: accountId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Account ID
+ *     responses:
+ *       200:
+ *         description: Player found successfully
+ *       404:
+ *         description: Player not found
+ *       500:
+ *         description: Some server error
+ */
+router.get('/byaccount/:accountId', async (req, res) => {
+  try {
+    const { accountId } = req.params;
+
+    // Validar el formato de ObjectId
+    if (!mongoose.Types.ObjectId.isValid(accountId)) {
+      return res.status(400).json({ message: 'Invalid ObjectId format' });
+    }
+
+    // Encontrar el jugador asociado con el accountId dado
+    const player = await Player.findOne({ accountId: accountId });
+
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+
+    res.status(200).json(player);
+  } catch (error) {
+    console.error('Error fetching player:', error);
+    res.status(500).json({ message: 'Error fetching player' });
   }
 });
 

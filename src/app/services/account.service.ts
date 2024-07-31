@@ -53,6 +53,7 @@ export class AccountService {
           // Store the token in localStorage
           if (response.data.token) {
             sessionStorage.setItem('authToken', response.data.token);
+            sessionStorage.setItem('accountId', response.data.accountId);
           }
           observer.next(response);
           observer.complete();
@@ -66,5 +67,6 @@ export class AccountService {
   // Method to logout from an account
   logout(): void {
     sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('accountId');
   }
 }

@@ -1,4 +1,3 @@
-// models/Player.js
 const mongoose = require('mongoose');
 
 const AbilitySchema = new mongoose.Schema({

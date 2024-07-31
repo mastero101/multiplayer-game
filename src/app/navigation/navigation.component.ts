@@ -56,6 +56,7 @@ export class NavigationComponent implements OnInit {
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
       sessionStorage.removeItem('authToken');
+      sessionStorage.removeItem('accountId');
       this.isLoggedIn = false;
       this.router.navigate(['/login']); // Redirect to login page
     }
