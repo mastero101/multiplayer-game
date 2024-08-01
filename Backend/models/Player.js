@@ -40,6 +40,10 @@ const PlayerSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  freePoints: { 
+    type: Number, 
+    default: 0 
+  },
   experience: {
     type: Number,
     default: 0

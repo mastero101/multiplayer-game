@@ -7,12 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 
 import axios from 'axios';
 
 import { PlayerStatsComponent } from "../player-stats/player-stats.component";
 import { BattleComponent } from "../battle/battle.component";
+import { specialAbilities } from '../game.service';
 
 @Component({
   selector: 'app-player-creation',
@@ -41,7 +43,7 @@ export class PlayerCreationComponent {
 
   @Output() playerCreated = new EventEmitter<Player>();
 
-  constructor(private gameService: GameService) {
+  constructor(private gameService: GameService, private snackBar: MatSnackBar) {
     this.newPlayer = this.gameService.generateRandomAttributes(0);
     this.newPlayer.name = ''; // Inicializar el nombre del jugador
     this.newPlayer.class = this.availableClasses[0]; // Inicializar la clase del jugador
@@ -72,10 +74,18 @@ export class PlayerCreationComponent {
         throw new Error('User is not authenticated');
       }
   
-      // Include accountId in the newPlayer object
+      // Include accountId in the newPlayer object and ensure all attributes are present
       const playerData = {
-        ...this.newPlayer,
+        name: this.newPlayer.name,
+        class: this.newPlayer.class,
+        STR: this.newPlayer.STR,
+        DEX: this.newPlayer.DEX,
+        VIT: this.newPlayer.VIT,
+        INT: this.newPlayer.INT,
+        LUK: this.newPlayer.LUK,
+        freePoints: this.newPlayer.freePoints,
         accountId: accountId,
+        abilities: this.newPlayer.specialAbility,
       };
   
       // Set up the Axios request with the JWT in the headers
@@ -87,9 +97,38 @@ export class PlayerCreationComponent {
       });
   
       console.log('Player created successfully:', response.data);
-      this.playerCreated.emit(this.newPlayer);
+      this.playerCreated.emit(response.data); // Emit the player data returned from the server
     } catch (error) {
-      console.error('Error creating player:', error);
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 400 && error.response.data.message === 'Ya existe un jugador asociado a esta cuenta') {
+          console.error('Cannot create more than one player per account');
+          this.snackBar.open('You already have a created player. Cannot create more.', 'Close', { duration: 5000 });
+        } else {
+          console.error('Error creating player:', error.response.data);
+          this.snackBar.open('Error Creating Player', 'Close', { duration: 3000 });
+        }
+      } else {
+        console.error('Unexpected error:', error);
+        this.snackBar.open('Unexpected Error Creating Player', 'Close', { duration: 3000 });
+      }
+    }
+  }
+
+   // Function to assign a special ability based on the player's class
+   assignSpecialAbility() {
+    const abilitiesForClass = specialAbilities.filter((ability) =>
+      ability.classes.includes(this.newPlayer.class)
+    );
+
+    if (abilitiesForClass.length > 0) {
+      // Seleccionar una habilidad especial aleatoria de las disponibles para la clase del jugador
+      const randomAbility =
+        abilitiesForClass[Math.floor(Math.random() * abilitiesForClass.length)];
+
+      // Asignar la habilidad especial al jugador
+      this.newPlayer.specialAbility = randomAbility;
+    } else {
+      console.warn(`No special abilities available for class: ${this.newPlayer.class}`);
     }
   }
 }

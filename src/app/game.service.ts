@@ -220,8 +220,19 @@ export class GameService {
   }
 
   private transformPlayerData(data: any): Player {
-    const specialAbility = specialAbilities.find(ability => ability.name === data.specialAbility) || specialAbilities[0];
-    
+    // Buscar la habilidad especial desde el array de habilidades
+    const specialAbility = (data.abilities && data.abilities.length > 0) 
+      ? specialAbilities.find(ability => ability.name === data.abilities[0].name) 
+      : undefined;
+  
+    // Usar una habilidad predeterminada si no se encuentra ninguna
+    const defaultAbility: SpecialAbility = {
+      name: 'Default Ability',
+      description: 'No special ability assigned.',
+      execute: (attacker: Player, defender: Player) => `No special ability.`,
+      classes: [] // Puede ser una lista vacía o puedes definir algo más si lo prefieres
+    };
+  
     return {
       name: data.name,
       class: data.class,
@@ -230,7 +241,7 @@ export class GameService {
       VIT: data.VIT || data.vit || 0,
       INT: data.INT || data.int || 0,
       LUK: data.LUK || data.luk || 0,
-      specialAbility: specialAbility,
+      specialAbility: specialAbility || defaultAbility, // Asignar habilidad predeterminada si es necesario
       freePoints: data.freePoints || 0,
       _id: data._id,
       experience: data.experience || 0,

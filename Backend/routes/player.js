@@ -40,6 +40,67 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+const specialAbilities = [
+  {
+    name: 'Double Strike',
+    description: 'Attacks twice in one turn',
+    classes: ['Knight', 'Paladin'],
+    level: 1 // Nivel de la habilidad
+  },
+  {
+    name: 'Healing Light',
+    description: 'Heals the attacker for 50% of their INT',
+    classes: ['Druid', 'Paladin'],
+    level: 1
+  },
+  {
+    name: 'Fireball',
+    description: 'Deals INT*1.5 damage to the defender',
+    classes: ['Sorcerer', 'Druid'],
+    level: 1
+  },
+  {
+    name: 'Absolute Defense',
+    description: 'Greatly increases defense at the cost of STR',
+    classes: ['Knight'],
+    level: 1
+  },
+  {
+    name: 'Mana Shield',
+    description: 'Increases defense at the cost of INT',
+    classes: ['Sorcerer'],
+    level: 1
+  },
+  {
+    name: 'Double Speed',
+    description: 'Greatly increases agility (DEX) at the cost of VIT',
+    classes: ['Paladin'],
+    level: 1
+  },
+  {
+    name: 'Maximum Healing',
+    description: 'Fully regenerates health, greatly increasing VIT',
+    classes: ['Druid'],
+    level: 1
+  }
+];
+
+// Función para asignar una habilidad especial basada en la clase del jugador
+function assignAbilityForClass(playerClass) {
+  // Filtrar habilidades disponibles para la clase dada
+  const availableAbilities = specialAbilities.filter(ability =>
+    ability.classes.includes(playerClass)
+  );
+
+  if (availableAbilities.length > 0) {
+    // Seleccionar una habilidad aleatoria entre las disponibles
+    const randomAbility = availableAbilities[Math.floor(Math.random() * availableAbilities.length)];
+    return randomAbility;
+  } else {
+    return null; // Retorna null si no hay habilidades disponibles para la clase
+  }
+}
+
 /**
  * @swagger
  * /player:
@@ -73,24 +134,36 @@ router.get('/:id', async (req, res) => {
 // Endpoint para crear un nuevo jugador
 router.post('/', async (req, res) => {
   try {
-    const { name, class: playerClass, accountId } = req.body;
+    const { name, class: playerClass, accountId, STR, DEX, VIT, INT, LUK, freePoints } = req.body;
 
     // Verificar campos necesarios
     if (!name || !playerClass || !accountId) {
       return res.status(400).json({ message: 'Faltan campos necesarios' });
     }
 
+    // Verificar si ya existe un jugador asociado a esta cuenta
+    const existingPlayer = await Player.findOne({ accountId });
+    if (existingPlayer) {
+      return res.status(400).json({ message: 'Ya existe un jugador asociado a esta cuenta' });
+    }
+
+    // Asignar una habilidad al jugador basado en su clase
+    const assignedAbility = assignAbilityForClass(playerClass);
+    const abilities = assignedAbility ? [assignedAbility] : [];
+
+    // Crear el nuevo jugador con la habilidad asignada
     const newPlayer = new Player({
       name,
       class: playerClass,
       accountId,
-      str: 10,  // Valores base para las estadísticas
-      dex: 10,
-      vit: 10,
-      int: 10,
-      luk: 10,
+      str: STR || 10,  // Usa el valor enviado o 10 como valor predeterminado
+      dex: DEX || 10,
+      vit: VIT || 10,
+      int: INT || 10,
+      luk: LUK || 10,
+      freePoints: freePoints || 0,
       experience: 0,
-      abilities: []
+      abilities: abilities // Asigna las habilidades
     });
 
     await newPlayer.save();
