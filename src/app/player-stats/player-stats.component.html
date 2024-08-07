@@ -1,23 +1,33 @@
 <div class="player-stats">
-  <img [src]="animationUrl" alt="{{ player.class }} animation">
-  <h2>{{ player.name }} - 
-      {{ player.class }}</h2>
+  <img [src]="animationUrl" alt="{{ player.class }} animation" class="player-animation">
+  
+  <h2>{{ player.name }} - {{ player.class }}</h2>
+  
+  <div class="level-experience">
+    <p><span>Level:</span> {{ player.level }}</p>
+    <p><span>Experience:</span> {{ player.experience }} / {{ calculateNextLevelExperience(player.level) }}</p>
+  </div>
+  
   <div class="stats">
     <p><span>STR:</span> {{ player.STR }}</p>
     <p><span>DEX:</span> {{ player.DEX }}</p>
+    
     <div class="vit-stats">
       <p><span>VIT:</span> {{ player.VIT }}</p>
       <div class="vit-bar-container">
         <div class="vit-bar" [ngClass]="vitBarClass" [ngStyle]="{'width': vitPercentage + '%'}">
-          <span style="margin-left: 5px;"> {{player.VIT }}</span>
+          <span style="margin-left: 5px;">{{ player.VIT }}</span>
         </div>
       </div>
     </div>
+    
     <p><span>INT:</span> {{ player.INT }}</p>
     <p><span>LUK:</span> {{ player.LUK }}</p>
   </div>
+  
   <div class="special-ability">
     <p>Special Ability: <br><br>{{ player.specialAbility.name }}</p>
     <p>Description: {{ player.specialAbility.description }}</p>
   </div>
 </div>
+

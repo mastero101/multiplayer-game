@@ -12,8 +12,11 @@ export interface Player {
   VIT: number;
   INT: number;
   LUK: number;
+  level: number;
+  experience: number;
   specialAbility: SpecialAbility;
   freePoints: number;
+  _id: string;
   [key: string]: any;
 }
 
@@ -137,7 +140,10 @@ export class GameService {
           INT: Math.max(Math.floor(Math.random() * 50) + 50, 1), // Elevada INT
           LUK: Math.max(Math.floor(Math.random() * 100), 1),  // Aleatoria LUK
           specialAbility: randomAbility,
-          freePoints: 20
+          freePoints: 20,
+          level: 1,
+          experience: 0 ,
+          _id: ''
         };
         break;
       case 'Druid':
@@ -150,7 +156,10 @@ export class GameService {
           INT: Math.max(Math.floor(Math.random() * 50) + 50, 1), // Elevada INT
           LUK: Math.max(Math.floor(Math.random() * 100), 1),  // Aleatoria LUK
           specialAbility: randomAbility,
-          freePoints: 20
+          freePoints: 20,
+          level: 1,
+          experience: 0,
+          _id: ''
         };
         break;
       case 'Paladin':
@@ -163,7 +172,10 @@ export class GameService {
           INT: Math.max(Math.floor(Math.random() * 50) + 20, 1), // Media INT
           LUK: Math.max(Math.floor(Math.random() * 100), 1),  // Aleatoria LUK
           specialAbility: randomAbility,
-          freePoints: 20
+          freePoints: 20,
+          level: 1,
+          experience: 0,
+          _id: ''
         };
         break;
       case 'Knight':
@@ -176,7 +188,10 @@ export class GameService {
           INT: Math.max(Math.floor(Math.random() * 30) + 1, 1),   // Baja INT
           LUK: Math.max(Math.floor(Math.random() * 100), 1),  // Aleatoria LUK
           specialAbility: randomAbility,
-          freePoints: 20
+          freePoints: 20,
+          level: 1,
+          experience: 0,
+          _id: ''
         };
         break;
       default:
@@ -189,7 +204,10 @@ export class GameService {
           INT: Math.max(Math.floor(Math.random() * 100), 1),
           LUK: Math.max(Math.floor(Math.random() * 100), 1),
           specialAbility: randomAbility,
-          freePoints: 20
+          freePoints: 20,
+          level: 1,
+          experience: 0,
+          _id: ''
         };
         break;
     }
@@ -201,14 +219,21 @@ export class GameService {
     try {
       const authToken = sessionStorage.getItem('authToken');
       const response = await axios.get<Player>(
-        `${this.apiUrl}`+`/byaccount/${accountId}`,
+        `${this.apiUrl}/byaccount/${accountId}`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
       );
-
+  
+      const player = this.transformPlayerData(response.data);
+  
+      // Almacenar el _id en sessionStorage
+      if (player) {
+        sessionStorage.setItem('playerId', player._id);
+      }
+  
       console.log(response.data);
-      return this.transformPlayerData(response.data);
+      return player;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error fetching player:', error.response?.data || error.message);
@@ -230,7 +255,7 @@ export class GameService {
       name: 'Default Ability',
       description: 'No special ability assigned.',
       execute: (attacker: Player, defender: Player) => `No special ability.`,
-      classes: [] // Puede ser una lista vacía o puedes definir algo más si lo prefieres
+      classes: []
     };
   
     return {
@@ -245,6 +270,7 @@ export class GameService {
       freePoints: data.freePoints || 0,
       _id: data._id,
       experience: data.experience || 0,
+      level: data.level || 0, 
       accountId: data.accountId
     };
   }

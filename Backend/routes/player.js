@@ -251,20 +251,51 @@ router.patch('/:id/experience', async (req, res) => {
   const { id } = req.params;
   const { experience } = req.query;
 
+  console.log('Received player ID:', id);
+  console.log('Received experience amount:', experience);
+  
   try {
     const player = await Player.findById(id);
     if (!player) {
       return res.status(404).json({ error: 'Player not found' });
     }
 
+    // Actualizar experiencia del jugador
     player.experience += Number(experience);
+
+    // Calcular nivel actual del jugador
+    const currentLevel = player.level;
+    const newLevel = calculateLevel(player.experience);
+
+    // Verificar si el jugador ha subido de nivel
+    if (newLevel > currentLevel) {
+      player.level = newLevel;
+      // Asignar puntos de habilidad libres como recompensa por cada nivel ganado
+      player.freePoints += (newLevel - currentLevel) * 5; // Asigna 5 puntos por cada nivel ganado
+    }
+
     await player.save();
 
-    res.status(200).json(player);
+    // Calcula la experiencia necesaria para el siguiente nivel
+    const nextLevelExp = experienceForNextLevel(player.level);
+
+    res.status(200).json({
+      player,
+      nextLevelExp,  // Incluye la experiencia necesaria para el siguiente nivel
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+function calculateLevel(experience) {
+  return Math.floor(Math.sqrt(experience) / 10);
+}
+
+// Calcula la experiencia necesaria para el siguiente nivel
+function experienceForNextLevel(level) {
+  return Math.pow((level + 1) * 10, 2);
+}
 
 /**
  * @swagger
@@ -361,7 +392,7 @@ router.patch('/:id/stats', async (req, res) => {
  *         description: Some server error
  */
 router.post('/:id/abilities', async (req, res) => {
-  const { id } = req.params;
+  const { accountId } = req.params;
   const { name, level } = req.body;
 
   try {

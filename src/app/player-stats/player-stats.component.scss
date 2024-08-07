@@ -1,85 +1,96 @@
 .player-stats {
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 15px;
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  background-color: #fff;
-  margin: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
-  h3 {
-    margin: 0;
-  }
-
-  img {
-    margin: 0 auto;
-    width: 64px;
-    height: 64px; 
-    margin-bottom: 10px;
-  }
-}
-
-.player-stats h2 {
-  font-size: 1.6em;
-  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
   margin-bottom: 10px;
-}
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
 
-.player-stats .stats p {
-  margin: 5px 0;
-}
+  .player-animation {
+    width: 100px;
+    height: auto;
+    margin-bottom: 15px;
+  }
 
-.player-stats .stats span {
-  font-weight: bold;
-}
+  h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 24px;
+    text-align: center;
+  }
 
-.vit-bar-container {
-  position: relative;
-  width: 100%;
-  background-color: #e0e0e0; /* Color de fondo de la barra */
-  height: 20px;
-  border-radius: 5px;
-  overflow: hidden;
-}
+  .level-experience {
+    margin-bottom: 15px;
+    text-align: center;
 
-.vit-bar {
-  height: 100%;
-  display: flex;
-  align-items: center; /* Centra el contenido verticalmente */
-  justify-content: center; /* Centra el contenido horizontalmente */
-  color: white;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  white-space: nowrap; /* Evita el salto de línea del contenido */
-  transition: width 0.5s ease-in-out; /* Animación de cambio de ancho */
-}
+    p {
+      font-size: 14px;
+      margin: 5px 0;
+    }
 
-/* Colores de la barra según el porcentaje de salud */
-.vit-bar.green {
-  background-color: #76c7c0; /* Verde */
-}
+    span {
+      font-weight: bold;
+    }
+  }
 
-.vit-bar.yellow {
-  background-color: #f2c75c; /* Amarillo */
-}
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
 
-.vit-bar.red {
-  background-color: #ff6f6f; /* Rojo */
-}
+    p {
+      font-size: 14px;
+      margin: 5px 0;
 
-.vit-bar span {
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+      span {
+        font-weight: bold;
+      }
+    }
+  }
 
-.special-ability {
-  margin-top: 15px;
-}
+  .vit-stats {
+    grid-column: span 2;
 
-.special-ability p {
-  margin: 5px 0;
+    .vit-bar-container {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .vit-bar {
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      color: white;
+      font-size: 12px;
+      padding: 0 5px;
+
+      &.green {
+        background-color: #4caf50;
+      }
+
+      &.yellow {
+        background-color: #ffeb3b;
+      }
+
+      &.red {
+        background-color: #f44336;
+      }
+    }
+  }
+
+  .special-ability {
+    text-align: center;
+    p {
+      font-size: 14px;
+      margin: 10px 0;
+    }
+  }
 }

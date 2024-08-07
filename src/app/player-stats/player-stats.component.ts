@@ -61,4 +61,8 @@ export class PlayerStatsComponent implements OnInit, OnChanges {
         break;
     }
   }
+
+  calculateNextLevelExperience(level: number): number {
+    return Math.pow((level + 1) * 10, 2);
+  }
 }
