@@ -115,8 +115,8 @@ export class GameService {
   private playersSubject = new BehaviorSubject<Player[]>([]);
   players$ = this.playersSubject.asObservable();
 
-  private apiUrl = 'http://localhost:5000/player';
-  private apiUrl2 = 'https://rpg21-game-backend.vercel.app/player';
+  private apiUrl2 = 'http://localhost:5000/player';
+  private apiUrl = 'https://rpg21-game-backend.vercel.app/player';
 
   constructor() {}
 
