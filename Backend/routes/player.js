@@ -297,6 +297,48 @@ function experienceForNextLevel(level) {
   return Math.pow((level + 1) * 10, 2);
 }
 
+// Add a new endpoint for distributing free points
+router.patch('/:id/distribute-points', async (req, res) => {
+  const { id } = req.params;
+  const { pointsDistribution } = req.body; // Expect an object with attributes and points to distribute
+
+  try {
+    // Fetch player from database
+    const player = await Player.findById(id);
+    if (!player) {
+      return res.status(404).json({ error: 'Player not found' });
+    }
+
+    // Calculate total points to distribute
+    const totalPoints = Object.values(pointsDistribution).reduce((acc, curr) => acc + curr, 0);
+
+    // Check if player has enough free points
+    if (totalPoints > player.freePoints) {
+      return res.status(400).json({ error: 'Not enough free points' });
+    }
+
+    // Update player attributes based on the distribution
+    player.str += pointsDistribution.str || 0;
+    player.dex += pointsDistribution.dex || 0;
+    player.vit += pointsDistribution.vit || 0;
+    player.int += pointsDistribution.int || 0;
+    player.luk += pointsDistribution.luk || 0;
+
+    // Deduct the used free points
+    player.freePoints -= totalPoints;
+
+    // Save updated player data
+    await player.save();
+
+    res.status(200).json({
+      message: 'Points distributed successfully',
+      player,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 /**
  * @swagger
  * /{id}/stats:

@@ -1,0 +1,38 @@
+.point-distribution {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  
+  mat-card {
+    margin-bottom: 16px;
+  }
+  
+  .input-group {
+    margin-bottom: 16px;
+  }
+  
+  .free-points {
+    margin: 16px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  mat-icon-button {
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+  
+  
+  

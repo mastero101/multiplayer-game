@@ -9,6 +9,8 @@ import { PlayerStatsComponent } from "../player-stats/player-stats.component";
 import { BattleComponent } from "../battle/battle.component";
 
 import { PlayerCreationComponent } from '../player-creation/player-creation.component';
+import { PlayerAttributesComponent } from '../player-attributes/player-attributes.component';
+
 
 @Component({
   selector: 'app-game-board',
@@ -18,7 +20,8 @@ import { PlayerCreationComponent } from '../player-creation/player-creation.comp
     CommonModule,
     MatButtonModule,
     BattleComponent,
-    PlayerCreationComponent
+    PlayerCreationComponent,
+    PlayerAttributesComponent
 ],
   templateUrl: './game-board.component.html',
   styleUrl: './game-board.component.scss'
@@ -27,8 +30,10 @@ export class GameBoardComponent implements OnInit, AfterViewChecked {
   players: Player[] = [];
   player1!: Player;
   player2!: Player;
+  selectedPlayer?: Player;
   battleStarted = false;
   creatingPlayer = false;
+  playerExists = false;
 
   private shouldScroll = false;
 
@@ -58,6 +63,8 @@ export class GameBoardComponent implements OnInit, AfterViewChecked {
     const player = await this.gameService.fetchPlayerByAccountId(accountId);
     if (player) {
       this.gameService.addPlayer(player);
+      this.selectedPlayer = player;
+      this.playerExists = true;
       console.log('Player added to the game board:', player);
     } else {
       console.log('No player found for this accountId.');
@@ -69,6 +76,17 @@ export class GameBoardComponent implements OnInit, AfterViewChecked {
     this.gameService.addPlayer(newPlayer);
   }
 
+  togglePlayerCreation() {
+    if (this.playerExists) {
+      // Logic to handle editing player stats
+      this.creatingPlayer = false;
+      this.shouldScroll = true;
+    } else {
+      this.creatingPlayer = true;
+      this.shouldScroll = true;
+    }
+  }
+
   createPlayer() {
     this.creatingPlayer = true;
     this.shouldScroll = true;
@@ -76,6 +94,7 @@ export class GameBoardComponent implements OnInit, AfterViewChecked {
 
   onPlayerCreated(player: Player) {
     this.gameService.addPlayer(player);
+    this.selectedPlayer = player;
     this.creatingPlayer = false;
     this.shouldScroll = true;
   }

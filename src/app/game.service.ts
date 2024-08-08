@@ -115,8 +115,8 @@ export class GameService {
   private playersSubject = new BehaviorSubject<Player[]>([]);
   players$ = this.playersSubject.asObservable();
 
-  private apiUrl2 = 'http://localhost:5000/player';
-  private apiUrl = 'https://rpg21-game-backend.vercel.app/player';
+  private apiUrl = 'http://localhost:5000/player';
+  private apiUrl2 = 'https://rpg21-game-backend.vercel.app/player';
 
   constructor() {}
 
@@ -134,13 +134,13 @@ export class GameService {
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 30) + 1, 1),   // Baja STR
-          DEX: Math.max(Math.floor(Math.random() * 60) + 20, 1), // Media DEX
-          VIT: Math.max(Math.floor(Math.random() * 30) + 1, 1),   // Baja VIT
-          INT: Math.max(Math.floor(Math.random() * 50) + 50, 1), // Elevada INT
-          LUK: Math.max(Math.floor(Math.random() * 100), 1),  // Aleatoria LUK
+          STR: Math.max(Math.floor(Math.random() * 3) + 1, 1),   // Baja STR
+          DEX: Math.max(Math.floor(Math.random() * 4) + 2, 1), // Media DEX
+          VIT: Math.max(Math.floor(Math.random() * 3) + 1, 1),   // Baja VIT
+          INT: Math.max(Math.floor(Math.random() * 8) + 5, 1), // Elevada INT
+          LUK: Math.max(Math.floor(Math.random() * 10), 1),  // Aleatoria LUK
           specialAbility: randomAbility,
-          freePoints: 20,
+          freePoints: 10,
           level: 1,
           experience: 0 ,
           _id: ''
@@ -150,13 +150,13 @@ export class GameService {
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 30) + 1, 1),   // Baja STR
-          DEX: Math.max(Math.floor(Math.random() * 60) + 20, 1), // Media DEX
-          VIT: Math.max(Math.floor(Math.random() * 50) + 20, 1), // Media VIT
-          INT: Math.max(Math.floor(Math.random() * 50) + 50, 1), // Elevada INT
-          LUK: Math.max(Math.floor(Math.random() * 100), 1),  // Aleatoria LUK
+          STR: Math.max(Math.floor(Math.random() * 3) + 1, 1),   // Baja STR
+          DEX: Math.max(Math.floor(Math.random() * 4) + 2, 1), // Media DEX
+          VIT: Math.max(Math.floor(Math.random() * 5) + 2, 1), // Media VIT
+          INT: Math.max(Math.floor(Math.random() * 8) + 5, 1), // Elevada INT
+          LUK: Math.max(Math.floor(Math.random() * 10), 1),  // Aleatoria LUK
           specialAbility: randomAbility,
-          freePoints: 20,
+          freePoints: 10,
           level: 1,
           experience: 0,
           _id: ''
@@ -166,13 +166,13 @@ export class GameService {
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 50) + 20, 1), // Media STR
-          DEX: Math.max(Math.floor(Math.random() * 80) + 20, 1), // Alta DEX
-          VIT: Math.max(Math.floor(Math.random() * 50) + 20, 1), // Media VIT
-          INT: Math.max(Math.floor(Math.random() * 50) + 20, 1), // Media INT
-          LUK: Math.max(Math.floor(Math.random() * 100), 1),  // Aleatoria LUK
+          STR: Math.max(Math.floor(Math.random() * 5) + 2, 1), // Media STR
+          DEX: Math.max(Math.floor(Math.random() * 10) + 2, 1), // Alta DEX
+          VIT: Math.max(Math.floor(Math.random() * 5) + 2, 1), // Media VIT
+          INT: Math.max(Math.floor(Math.random() * 5) + 2, 1), // Media INT
+          LUK: Math.max(Math.floor(Math.random() * 10), 1),  // Aleatoria LUK
           specialAbility: randomAbility,
-          freePoints: 20,
+          freePoints: 10,
           level: 1,
           experience: 0,
           _id: ''
@@ -182,13 +182,13 @@ export class GameService {
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 50) + 50, 1), // Alta STR
-          DEX: Math.max(Math.floor(Math.random() * 60) + 20, 1), // Media DEX
-          VIT: Math.max(Math.floor(Math.random() * 50) + 50, 1), // Alta VIT
-          INT: Math.max(Math.floor(Math.random() * 30) + 1, 1),   // Baja INT
-          LUK: Math.max(Math.floor(Math.random() * 100), 1),  // Aleatoria LUK
+          STR: Math.max(Math.floor(Math.random() * 5) + 5, 1), // Alta STR
+          DEX: Math.max(Math.floor(Math.random() * 6) + 2, 1), // Media DEX
+          VIT: Math.max(Math.floor(Math.random() * 10) + 5, 1), // Alta VIT
+          INT: Math.max(Math.floor(Math.random() * 3) + 1, 1),   // Baja INT
+          LUK: Math.max(Math.floor(Math.random() * 10), 1),  // Aleatoria LUK
           specialAbility: randomAbility,
-          freePoints: 20,
+          freePoints: 10,
           level: 1,
           experience: 0,
           _id: ''
@@ -204,7 +204,7 @@ export class GameService {
           INT: Math.max(Math.floor(Math.random() * 100), 1),
           LUK: Math.max(Math.floor(Math.random() * 100), 1),
           specialAbility: randomAbility,
-          freePoints: 20,
+          freePoints: 10,
           level: 1,
           experience: 0,
           _id: ''
@@ -273,6 +273,36 @@ export class GameService {
       level: data.level || 0, 
       accountId: data.accountId
     };
+  }
+
+  async distributePoints(playerId: string, pointsDistribution: { [key: string]: number }): Promise<void> {
+    try {
+      const response = await axios.patch(
+        `${this.apiUrl}/${playerId}/distribute-points`,
+        { pointsDistribution }
+      );
+      console.log('Points distributed successfully:', response.data);
+      
+      // Actualizar el jugador localmente después de la distribución de puntos
+      const updatedPlayer = response.data.player;
+      this.updatePlayer(updatedPlayer);
+  
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error distributing points:', error.response?.data || error.message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
+  }
+  
+  private updatePlayer(updatedPlayer: Player) {
+    const currentPlayers = this.playersSubject.getValue();
+    const playerIndex = currentPlayers.findIndex(player => player._id === updatedPlayer._id);
+    if (playerIndex !== -1) {
+      currentPlayers[playerIndex] = updatedPlayer;
+      this.playersSubject.next([...currentPlayers]);
+    }
   }
 
   addPlayer(player: Player) {

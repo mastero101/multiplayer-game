@@ -1,7 +1,13 @@
 <div class="game-board">
   <div class="game-actions">
     <button mat-raised-button (click)="addRandomPlayer()">Add Random Player</button>
-    <button mat-raised-button color="accent" (click)="createPlayer()">Create Custom Player</button>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="togglePlayerCreation()"
+    >
+      {{ playerExists ? 'Edit Player Stats' : 'Create Custom Player' }}
+    </button>
     <button mat-raised-button color="primary" (click)="startBattle()">Start Battle</button>
   </div>
   <div class="game-players">
@@ -10,7 +16,23 @@
     </div>
   </div>
   
-  <app-player-creation *ngIf="creatingPlayer" (playerCreated)="onPlayerCreated($event)" id="player-creation-section"></app-player-creation>
+  <app-player-creation
+    *ngIf="creatingPlayer"
+    (playerCreated)="onPlayerCreated($event)"
+    id="player-creation-section"
+  ></app-player-creation>
+
+  <app-player-attributes
+    *ngIf="!creatingPlayer && playerExists && selectedPlayer"
+    [player]="selectedPlayer"
+    [freePoints]="selectedPlayer ? selectedPlayer.freePoints : 0"
+    id="player-attributes-section"
+  ></app-player-attributes>
   
-  <app-battle *ngIf="battleStarted" [player1]="player1" [player2]="player2" id="battle-section"></app-battle>
+  <app-battle
+    *ngIf="battleStarted"
+    [player1]="player1"
+    [player2]="player2"
+    id="battle-section"
+  ></app-battle>
 </div>

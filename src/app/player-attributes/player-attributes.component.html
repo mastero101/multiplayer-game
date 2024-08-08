@@ -1,0 +1,52 @@
+<div *ngIf="player && attributes" class="point-distribution">
+  <h2>Distribute Free Points</h2>
+  <mat-card>
+    <mat-card-content>
+      <div *ngFor="let attribute of attributes" class="input-group">
+        <mat-form-field appearance="fill">
+          <mat-label>{{ attribute.label }}</mat-label>
+          <div class="input-container">
+            <button
+              mat-icon-button
+              (click)="decrementPoints(attribute.key)"
+              [disabled]="(pointsDistribution[attribute.key] || 0) <= 0"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="pointsDistribution[attribute.key]"
+              name="{{ attribute.key }}"
+              [attr.aria-label]="'Points for ' + attribute.label"
+              [min]="0"
+              [max]="freePoints"
+              (ngModelChange)="validatePoints(attribute.key)"
+            />
+            <button
+              mat-icon-button
+              (click)="incrementPoints(attribute.key)"
+              [disabled]="freePoints <= 0"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <mat-hint>
+            Current: {{ (player[attribute.key.toUpperCase()] || 0) }}
+            <br />
+            New: {{ (player[attribute.key.toUpperCase()] || 0) + (pointsDistribution[attribute.key] || 0) }}
+          </mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <p class="free-points">Available Points: <strong>{{ freePoints }}</strong></p>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="distributePoints()"
+    [disabled]="!canDistributePoints()"
+  >
+    Confirm Distribution
+  </button>
+</div>
