@@ -23,7 +23,7 @@
   ></app-player-creation>
 
   <app-player-attributes
-    *ngIf="!creatingPlayer && playerExists && selectedPlayer"
+    *ngIf="showPlayerAttributes && playerExists && selectedPlayer"
     [player]="selectedPlayer"
     [freePoints]="selectedPlayer ? selectedPlayer.freePoints : 0"
     id="player-attributes-section"

@@ -34,6 +34,7 @@ export class GameBoardComponent implements OnInit, AfterViewChecked {
   battleStarted = false;
   creatingPlayer = false;
   playerExists = false;
+  showPlayerAttributes = false;
 
   private shouldScroll = false;
 
@@ -78,7 +79,8 @@ export class GameBoardComponent implements OnInit, AfterViewChecked {
 
   togglePlayerCreation() {
     if (this.playerExists) {
-      // Logic to handle editing player stats
+      // Toggle the display of player attributes
+      this.showPlayerAttributes = !this.showPlayerAttributes;
       this.creatingPlayer = false;
       this.shouldScroll = true;
     } else {

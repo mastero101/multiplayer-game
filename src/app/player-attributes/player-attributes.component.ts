@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar  } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule   } from '@angular/material/snack-bar';
 
 import { Player } from '../game.service';
 import { GameService } from '../game.service';
@@ -22,6 +22,7 @@ import { GameService } from '../game.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatSnackBarModule,
     FormsModule,
   ],
   templateUrl: './player-attributes.component.html',
@@ -149,21 +150,36 @@ export class PlayerAttributesComponent implements OnInit {
       console.log('Points distributed:', this.pointsDistribution);
     } else {
       console.error('Cannot distribute points. Check point allocation.');
-      return; // Agregado un return para evitar que el código continúe
+      return;
     }
   
     this.gameService.distributePoints(playerId, this.pointsDistribution)
       .then(() => {
         console.log('Points distributed successfully');
-        this.snackBar.open('Points distributed successfully!', 'OK', {
+
+        // Mostrar el Snackbar
+        const snackBarRef = this.snackBar.open('Points distributed successfully!', 'OK', {
           duration: 3000,
         });
+
+        // Añadir listener para cerrar el Snackbar cuando se presione "OK"
+        snackBarRef.onAction().subscribe(() => {
+          snackBarRef.dismiss();
+          console.log('Snackbar closed by user action.');
+        });
+
         this.refreshPlayerData(); // O usar window.location.reload();
       })
       .catch(error => {
         console.error('Error distributing points:', error);
-        this.snackBar.open('Error distributing points', 'Retry', {
+
+        const snackBarRef = this.snackBar.open('Error distributing points', 'Retry', {
           duration: 3000,
+        });
+
+        // Añadir listener para el intento de repetición
+        snackBarRef.onAction().subscribe(() => {
+          this.distributePoints(); // Reintentar la distribución de puntos
         });
       });
   }  

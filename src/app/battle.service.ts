@@ -30,10 +30,8 @@ export class BattleService {
     if (player1.VIT > 0) {
       steps.push(`${player1.name} Wins!`);
       this.updateExperience(100); 
-      this.updateExperience(-50); 
     } else if (player2.VIT > 0) {
-      steps.push(`${player2.name} Wins!`);
-      this.updateExperience(100); 
+      steps.push(`${player2.name} Wins!`); 
       this.updateExperience(-50);
     } else {
       steps.push(`It's a Tie!`);
