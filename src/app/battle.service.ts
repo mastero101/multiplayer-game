@@ -18,7 +18,8 @@ export class BattleService {
     const steps: string[] = [];
     let round = 1;
 
-    while (player1.VIT > 0 && player2.VIT > 0) {
+    const maxRounds = 20;
+    while (player1.VIT > 0 && player2.VIT > 0 && round <= maxRounds) {
       steps.push(`Round ${round}:`);
       steps.push(this.takeTurn(player1, player2));
       if (player2.VIT > 0) {
