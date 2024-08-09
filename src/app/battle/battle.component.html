@@ -6,7 +6,12 @@
     <app-player-stats [player]="player2"></app-player-stats>
   </div>
   <div class="battle-actions">
-    <button mat-raised-button color="primary" (click)="startBattle()">Start Battle</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="startBattle()" 
+      [disabled]="isBattleStarted">Start Battle
+    </button>
     <button mat-raised-button color="warn" (click)="restartBattle()">Restart Battle</button>
   </div>
   <div class="battle-log">

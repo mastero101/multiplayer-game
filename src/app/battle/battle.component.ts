@@ -25,6 +25,7 @@ export class BattleComponent implements AfterViewInit {
   @ViewChild('battleContainer') battleContainer!: ElementRef;
   battleLog: string[] = [];
   result: string | null = null;
+  isBattleStarted: boolean = false;
 
   constructor(private battleService: BattleService) {}
 
@@ -33,12 +34,17 @@ export class BattleComponent implements AfterViewInit {
   }
 
   startBattle() {
+    if (this.isBattleStarted) return; 
+  
+    this.isBattleStarted = true; // Deshabilitar el botón
+  
     this.battleService.battle(this.player1, this.player2).subscribe(
       steps => {
         this.processSteps(steps);
       },
       error => {
         console.error('Error during battle:', error);
+        this.isBattleStarted = false; // Volver a habilitar el botón si hay un error
       }
     );
   }
@@ -63,7 +69,8 @@ export class BattleComponent implements AfterViewInit {
 
 
   restartBattle() {
-    window.location.reload(); // Reset the result
+    this.isBattleStarted = false; // Volver a habilitar el botón
+    window.location.reload(); // Reiniciar la batalla
   }
 
   private scrollToBottom() {
