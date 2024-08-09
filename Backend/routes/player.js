@@ -252,7 +252,6 @@ router.patch('/:id/experience', async (req, res) => {
   const { experience } = req.query;
 
   console.log('Received player ID:', id);
-  console.log('Received experience amount:', experience);
   
   try {
     const player = await Player.findById(id);
@@ -261,7 +260,9 @@ router.patch('/:id/experience', async (req, res) => {
     }
 
     // Actualizar experiencia del jugador
-    player.experience += Number(experience);
+    const gainedExperience = Math.round(experience * player.level / 1.5);
+    player.experience += gainedExperience;
+    console.log('Received experience amount:', gainedExperience);
 
     // Calcular nivel actual del jugador
     const currentLevel = player.level;
