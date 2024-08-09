@@ -121,28 +121,38 @@ export class GameService {
   constructor() {}
 
   generateRandomAttributes(existingPlayersCount: number): Player {
+    const playerLevel = parseInt(sessionStorage.getItem('playerLevel') || '1', 10);
     const classes = ['Sorcerer', 'Druid', 'Paladin', 'Knight'];
     const randomClass = classes[Math.floor(Math.random() * classes.length)];
+  
+    const totalPoints = 20 + (playerLevel - 1) * 4;
+    let remainingPoints = totalPoints;
   
     let newPlayer: Player;
   
     const abilitiesForClass = specialAbilities.filter(ability => ability.classes.includes(randomClass));
     const randomAbility = abilitiesForClass[Math.floor(Math.random() * abilitiesForClass.length)];
   
+    const distributePoints = (min: number, max: number) => {
+      const points = Math.max(min, Math.min(Math.floor(Math.random() * (max - min + 1)) + min, remainingPoints));
+      remainingPoints -= points;
+      return points;
+    };
+  
     switch(randomClass) {
       case 'Sorcerer':
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 3) + 1, 1),   // Baja STR
-          DEX: Math.max(Math.floor(Math.random() * 4) + 2, 1), // Media DEX
-          VIT: Math.max(Math.floor(Math.random() * 3) + 1, 1),   // Baja VIT
-          INT: Math.max(Math.floor(Math.random() * 8) + 5, 1), // Elevada INT
-          LUK: Math.max(Math.floor(Math.random() * 10), 1),  // Aleatoria LUK
+          STR: distributePoints(1, 3),
+          DEX: distributePoints(2, 4),
+          VIT: distributePoints(1, 3),
+          INT: distributePoints(5, Math.max(8, totalPoints * 0.4)),
+          LUK: distributePoints(1, 10),
           specialAbility: randomAbility,
-          freePoints: 10,
-          level: 1,
-          experience: 0 ,
+          freePoints: 0,
+          level: playerLevel,
+          experience: 0,
           _id: ''
         };
         break;
@@ -150,14 +160,14 @@ export class GameService {
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 3) + 1, 1),   // Baja STR
-          DEX: Math.max(Math.floor(Math.random() * 4) + 2, 1), // Media DEX
-          VIT: Math.max(Math.floor(Math.random() * 5) + 2, 1), // Media VIT
-          INT: Math.max(Math.floor(Math.random() * 8) + 5, 1), // Elevada INT
-          LUK: Math.max(Math.floor(Math.random() * 10), 1),  // Aleatoria LUK
+          STR: distributePoints(1, 3),
+          DEX: distributePoints(2, 4),
+          VIT: distributePoints(2, 5),
+          INT: distributePoints(5, Math.max(8, totalPoints * 0.4)),
+          LUK: distributePoints(1, 10),
           specialAbility: randomAbility,
-          freePoints: 10,
-          level: 1,
+          freePoints: 0,
+          level: playerLevel,
           experience: 0,
           _id: ''
         };
@@ -166,14 +176,14 @@ export class GameService {
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 5) + 2, 1), // Media STR
-          DEX: Math.max(Math.floor(Math.random() * 10) + 2, 1), // Alta DEX
-          VIT: Math.max(Math.floor(Math.random() * 5) + 2, 1), // Media VIT
-          INT: Math.max(Math.floor(Math.random() * 5) + 2, 1), // Media INT
-          LUK: Math.max(Math.floor(Math.random() * 10), 1),  // Aleatoria LUK
+          STR: distributePoints(2, 5),
+          DEX: distributePoints(2, Math.max(10, totalPoints * 0.3)),
+          VIT: distributePoints(2, 5),
+          INT: distributePoints(2, 5),
+          LUK: distributePoints(1, 10),
           specialAbility: randomAbility,
-          freePoints: 10,
-          level: 1,
+          freePoints: 0,
+          level: playerLevel,
           experience: 0,
           _id: ''
         };
@@ -182,14 +192,14 @@ export class GameService {
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 5) + 5, 1), // Alta STR
-          DEX: Math.max(Math.floor(Math.random() * 6) + 2, 1), // Media DEX
-          VIT: Math.max(Math.floor(Math.random() * 10) + 5, 1), // Alta VIT
-          INT: Math.max(Math.floor(Math.random() * 3) + 1, 1),   // Baja INT
-          LUK: Math.max(Math.floor(Math.random() * 10), 1),  // Aleatoria LUK
+          STR: distributePoints(5, Math.max(5, totalPoints * 0.3)),
+          DEX: distributePoints(2, 6),
+          VIT: distributePoints(5, Math.max(10, totalPoints * 0.3)),
+          INT: distributePoints(1, 3),
+          LUK: distributePoints(1, 10),
           specialAbility: randomAbility,
-          freePoints: 10,
-          level: 1,
+          freePoints: 0,
+          level: playerLevel,
           experience: 0,
           _id: ''
         };
@@ -198,18 +208,26 @@ export class GameService {
         newPlayer = {
           name: `Player${existingPlayersCount + 1}`,
           class: randomClass,
-          STR: Math.max(Math.floor(Math.random() * 100), 1),
-          DEX: Math.max(Math.floor(Math.random() * 100), 1),
-          VIT: Math.max(Math.floor(Math.random() * 100), 1),
-          INT: Math.max(Math.floor(Math.random() * 100), 1),
-          LUK: Math.max(Math.floor(Math.random() * 100), 1),
+          STR: distributePoints(1, totalPoints * 0.2),
+          DEX: distributePoints(1, totalPoints * 0.2),
+          VIT: distributePoints(1, totalPoints * 0.2),
+          INT: distributePoints(1, totalPoints * 0.2),
+          LUK: distributePoints(1, totalPoints * 0.2),
           specialAbility: randomAbility,
-          freePoints: 10,
-          level: 1,
+          freePoints: 0,
+          level: playerLevel,
           experience: 0,
           _id: ''
         };
         break;
+    }
+  
+    // Distribuir los puntos restantes aleatoriamente
+    const attributes = ['STR', 'DEX', 'VIT', 'INT', 'LUK'];
+    while (remainingPoints > 0) {
+      const randomAttribute = attributes[Math.floor(Math.random() * attributes.length)];
+      newPlayer[randomAttribute as keyof Player]++;
+      remainingPoints--;
     }
   
     return newPlayer;
@@ -230,6 +248,7 @@ export class GameService {
       // Almacenar el _id en sessionStorage
       if (player) {
         sessionStorage.setItem('playerId', player._id);
+        sessionStorage.setItem('playerLevel', player.level.toString());
       }
   
       console.log(response.data);
